@@ -190,7 +190,7 @@ MySQL 库 `bridge_agent`（本机 8.0）。图纸磁盘：`bridge_agent_demo/dat
 
 ### GitHub 公开仓库（2026-09-09 已锁）
 
-- 远程名 **BridgeAgent**，**public**，MIT。单仓（`web` + `bridge_agent_demo` + `python_agent` + `docs`）。
+- 远程名 **BridgeAgent**，**public**，MIT。单仓（`web` + `bridge_agent_demo` + `python_agent` + `docs`）。已推送：https://github.com/innozmy/BridgeAgent
 - **不提交：** `.env`、`application-local.properties`、本机 `data/`（图纸 / 知识 PDF 与解析产物 / `.sdb` / 头像）、`node_modules`、`.venv`/`venv`、`target/`、IDE、本机对话记录。规范整本 PDF 与竣工图册有版权，不进 Git。百炼 / Unstructured Key **只**在本机 `python_agent/.env`。
 - Spring 提交无密钥的 `application.properties`；本机复制 `application-local.properties.example` → `application-local.properties`（已 ignore）。Python 只提交 `.env.example`。
 - Vite **默认** `127.0.0.1:5173`；局域网需改 `host: true`（见「怎么跑」）。
