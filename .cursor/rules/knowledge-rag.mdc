@@ -1,0 +1,22 @@
+---
+description: 知识解析/合并/分割/嵌入；混搜 RRF；问询 ReAct 与建模 consult 已接线；识图不加 RAG；补发已落地。
+alwaysApply: true
+---
+
+# 知识 RAG
+
+细则以 `docs/roadmap.md`「知识 RAG」节为准，不要另起路线图。
+
+- 公司总库一份；项目启用集才是以后给 Agent 的知识范围。Python 不连业务库、不扫 `data/knowledge/`；路径由 Spring 注入 `knowledgeScope.documents[].rootPath`。
+- 磁盘约定：`data/knowledge/{sha256}/source.pdf`、`parse/`、`merge/`、`split/`。第三步过长分割已落地：独立按钮，只读 merge，只写 split。>1200 字才用千问 `text-embedding-v4` 语义切（gradient 刀口），重叠 80 字；不硬切；向量不落 split JSON。重跑解析/合并会作废 split/。
+- **解析**写 elements、JPEG、图号/表号目录。**合并**只黏正文（双钥匙）并挂 `mentionedFigureIds` / `mentionedTableIds`。JPEG、VL 长文、表 HTML **不拼进**条文 chunk。
+- **嵌入已落地：** 独立「嵌入」按钮（不是「索引」）。须已 split，人点才写本机 Milvus `knowledge_chunk`。嵌入与向量检索只在 Python；Spring 不调千问、不连 Milvus。v4 dense 1024 + sparse；本机 19530。重跑解析/合并/分割按 `document_id` 清向量。
+- **检索内核已落地：** 混搜。问句 `text-embedding-v4` `dense&sparse`、`text_type=query`；Milvus `hybrid_search` 同时 dense（COSINE）+ sparse（IP），**RRF** 融合。范围 = 项目启用且已嵌入的 `document_id`，v1 再加 `category=code`。三种 kind 一起搜；组包封顶图≤2、表≤2，其余给条文。数字：RRF k=60、每路 ANN 20、RRF 候选 40、组包总条数 10、同一枪最多 2 次混搜。启用集为空不降级搜总库；分数不回给模型。试检索 `POST /api/projects/{id}/knowledge/search` → Python `/v1/knowledge/search`。
+- **RAG 是按需工具（已挂图）：** 名 `search_knowledge`。问询 `react`、建模 `consult` 已接线；识图不加。不是每次 HTTP 自动塞规范。问询：模型只填问句。建模：问句由代码按构件组，最多 3 次工具。**禁止**自带 `documentId[]` / `clauseNo` / `figureNo` / `tableNo`。结果不写工程记忆。
+- **建模 consult（2026-09-04 已接线）：** 规范覆盖层 `codeOverlay`：`overrides`（软数字，账本已有尺寸不覆盖）+ `flags`（已有开关）+ `notices`（出处提示进时间线）。某题检索 notice「检索把握不足」时不合并该题 overrides/flags。`spec` 只消费白名单；拓扑仍写死。不搜 `manual`。细则见 `docs/roadmap.md`「建模图」。
+- **问询局部 ReAct（2026-09-04 已接线）：** 白名单仅 `search_knowledge`；每枪最多 1 次工具；LLM 最多 3 轮；出卡不是工具、只允许 `compose` 终态。账本/STM/LTM 只读注入，不做读记忆工具。细则见 `docs/roadmap.md`「问询图」。
+- **自我纠正（已挂检索工具）：** 只纠正检索，不生成答案。`run_search` 内：搜 → 双层评估（空/未启用硬失败 + 千问文本集合通过/不通过）→ 不通过则改写再搜（最多 1 次改写、共 2 次混搜）。改写用问询同一文本口；禁止编造条号、禁止把账本尺寸写进规范问句。两次都不通过则交回较好一组 + notice「检索把握不足」。评估不得因无 JPEG 失败。过程不写工程记忆。不要把纠正环做成问询图节点。
+- **补发已落地：** 对象 = 问询 + 建模。触发 = 条文 `mentioned*Ids` ∪ 图/表向量命中 ∪ 用户点名；每请求最多 4 张 JPEG；表 HTML 实现默认 8000 字（先减旧对话，不减账本）；不写工程记忆。同一次 Python HTTP 内组包；路径来自 Spring 注入的文献指针，Python 不扫总库。问询进 compose VL；建模只进 consult。识图不补发规范图/表。工具先回短 `body` + 待补发 `{documentId, refId}`，再按指针补齐。
+- **补给哪些 Agent：** 问询已接线。建模已接线（规范覆盖层 consult）。识图不加 RAG。未进白名单不要挂。有人要把规范接到识图时：先提醒「该图没进白名单」。
+- **不新增「企业要求」分类**（本阶段不定）；当前只定规范。总库 `manual` / `case` 维持。
+- 规范整本 PDF 禁止走识图管线。附图 VL 不经 `drawing_parse`。

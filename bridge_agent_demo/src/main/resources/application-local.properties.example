@@ -1,0 +1,6 @@
+# 复制为同目录 application-local.properties 后填写。该文件已被 gitignore，不要提交。
+# Spring 启动时 optional 导入；缺 JWT（<32 字）会拒绝启动。
+
+spring.datasource.password=your_mysql_password
+# 随机长字符串，至少 32 个字符。换密钥会使已签发的登录票全部失效。
+app.jwt.secret=please-change-this-to-a-random-string-at-least-32-chars

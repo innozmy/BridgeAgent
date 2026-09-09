@@ -1,0 +1,59 @@
+# 本机与密钥。根目录 .gitignore 已忽略下列路径，clone 后不要 force-add。
+
+# --- 密钥（Python 百炼 Key 在 python_agent/.env，不要提交）---
+.env
+**/.env
+application-local.properties
+**/application-local.properties
+
+# --- 运行期数据（图纸 / 规范 PDF / 解析产物 / SAP 模型 / 头像）---
+data/
+**/data/
+.tmp_drawings/
+
+# --- Java ---
+target/
+**/target/
+build/
+.gradle/
+.idea/
+**/.idea/
+*.iml
+*.ipr
+*.iws
+.classpath
+.project
+.settings/
+.factorypath
+out/
+bin/
+
+# --- Python ---
+__pycache__/
+**/__pycache__/
+*.py[cod]
+.venv/
+**/.venv/
+venv/
+**/venv/
+.pytest_cache/
+**/.pytest_cache/
+.pages-cache/
+python_agent/last_parse_request.json
+python_agent/memory/
+
+# --- 前端 ---
+node_modules/
+**/node_modules/
+web/dist/
+*.local
+
+# --- OS / 编辑器 ---
+.DS_Store
+Thumbs.db
+*.log
+.vscode/
+
+# Cursor 本机工程缓存（规则 .cursor/rules 仍提交）
+.cursor/projects/
+agent-transcripts/

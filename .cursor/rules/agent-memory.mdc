@@ -1,0 +1,22 @@
+---
+description: 记忆由 Spring 落 MySQL；问询聊天不是记忆。规划见 docs/roadmap.md
+alwaysApply: true
+---
+
+# Agent 记忆
+
+- Python 只跑 Agent。记忆表：`project_param` 一行一键；`project_unit` 一联一行（跨径）；`project_unit_support` / `project_unit_column` 存每墩每根柱高；`project_ltm` 每项目一行；`agent_stm` 每工种一行且只放索引；页地图在 `drawing_page_map`；问询 STM 每会话一行。
+- 建模 STM 只放过程墓碑（已要过的 fileId+missingKeys、补识次数），**不抄**结构尺寸，**不存** `.sdb`。过长裁剪条数，不做问询式摘要。模型历史在 `project_sap_model`。下一版从账本重建。LTM 不存结构尺寸；只由 Spring 在任务终态写，问询不写 LTM。
+- 各 Agent 经每次 HTTP 的只读投影看到账本（固定列、`field_meta` 字段含义、`project_param` 的 key 与 label），不把参数抄进 STM。
+- 问询展示消息不是记忆；STM 才给模型。整包超模型上限约 70% 再压；问询默认留最近 8 轮。页地图和数字不压成散文。N 与 70% 为 Spring 配置。
+- **方案 C：** 请求内 Checkpoint 可进程内存；跨任务工种 STM 在 MySQL。页图 JPEG 不进 State。
+- 问询不写账本、页地图、LTM、工种 STM；**不读其它会话（含同项目其他用户）**。超管也不能看别人的问询。可以返回任务卡，由 Spring 落待同意卡（`proposed`，项目级）；人同意后 Spring 才开执行任务。不读未同意卡当已执行事实。知识图/表晚绑定，**不进**任何工程记忆。规范做成按需工具；**问询已接线（局部 ReAct）**，不要每次 HTTP 自动塞规范正文（见 `knowledge-rag.mdc`）。检索命中不写问询 STM。账本/各 STM/LTM 只读注入，不做读记忆工具。
+- 问询 STM 禁止写入页地图。用户在问询里说的尺寸要改模型，必须经概览确认或经同意后的识图任务进账本。同意任务卡后问询会话留一条展示记录（taskId）；STM 只记该 id 防重复出卡。
+- 删自己的问询会话：主人 + 项目 read，不要求 operate。
+- 删项目：MySQL 中账本（含参数袋）、LTM、各 STM、问询、时间线、页地图及图纸磁盘一并清；公司知识总库不删。
+- extracts 由 Python 只交含义与数；Spring 路由到固定列或 `project_param`。墩柱高走联表子表，不进袋。识图不自己选落点。
+- 参数袋只存 `field_meta` 未覆盖的扩展量；加 key 须对固定列与已有袋同义去重。建模缺项经 Spring 发补充识别。
+- 每次 HTTP 按工种注入：公共账本投影；识图带本轮 PDF 路径、图纸目录（无路径）与 `alreadyFetchedFileIds`、相关页地图（补充识别只带该 fileId）；建模带建模 STM 墓碑、目录/页地图指针、**LTM 只读索引**（check/spec/build 不读）、**knowledgeScope**；问询带本会话 STM + LTM 索引 + 工种 STM + **knowledgeScope**，不默认塞全书 pages。Python 只返回增量；识图可带 `needFiles`，由 Spring 同任务再发最多 2 枪，不由 Python 查库。
+- 问询记忆跟对话 `inquiry_thread`（按项目+用户私有）。图与图不私聊。下一步由 Spring 发新 HTTP。
+- **控制平面是外部 WorkFlow + 局部 ReAct**（见 `docs/roadmap.md`「隔离与角色」）：禁止整条链通用 ReAct；高风险工具不交给模型自选。
+- 架构或功能有变时，同步更新 `docs/roadmap.md`（见 `roadmap-sync.mdc`）。

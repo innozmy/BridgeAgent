@@ -1,0 +1,9 @@
+# Python 本地密钥与模型名，勿提交
+.env
+.venv/
+venv/
+__pycache__/
+*.pyc
+.pages-cache/
+last_parse_request.json
+memory/

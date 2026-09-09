@@ -1,0 +1,28 @@
+---
+description: 后端 Java 用中文注释说明分层与业务意图；新增代码同样要带注释
+globs: bridge_agent_demo/**/*.java
+alwaysApply: true
+---
+
+# 代码注释
+
+新增或修改代码时写**中文注释**，帮助读懂「这一层做什么、为什么这样写」，不要只复述语句。
+
+## 后端 Java
+
+- 每个类：类级 Javadoc，写明所属层（controller / service / mapper / entity / dto / vo）和职责。
+- 每个 public 方法：说明入参含义、返回什么、关键业务规则（例如幅面必填、文件白名单、同哈希去重）。
+- 字段：entity / dto / vo 给非显而易见的字段加行注释（枚举值、单位、可空）。
+- 不要给 getter/setter、Lombok 生成代码、或 `i++` 这类语句加废话注释。
+
+```java
+// ❌ 仅复述
+// 设置名称
+project.setName(name);
+
+// ✅ 说明意图
+// 建项只强制名称 + 幅面；跨径由图纸识别后再写入
+project.setName(request.getName().trim());
+```
+
+前端新增逻辑时，对非一眼能看懂的数据流（例如 inject 的项目详情从哪来）同样用简短中文注释。

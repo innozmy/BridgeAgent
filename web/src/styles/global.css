@@ -1,0 +1,158 @@
+:root {
+  --ba-ink: #1f2328;
+  --ba-muted: #59636e;
+  --ba-line: #d0d7de;
+  --ba-line-muted: #d8dee4;
+  --ba-bg: #ffffff;
+  --ba-subtle: #f6f8fa;
+  --ba-primary: #4d6bfe;
+  --ba-link: #4d6bfe;
+  --ba-accent: #4d6bfe;
+  --ba-warn-bg: #fff8c5;
+  --ba-warn-line: #d4a72c;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#app {
+  margin: 0;
+  min-height: 100%;
+  background: var(--ba-bg);
+  color: var(--ba-ink);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans SC", "PingFang SC",
+    "Microsoft YaHei", Helvetica, Arial, sans-serif;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+a {
+  color: var(--ba-link);
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+.ba-page-title {
+  margin: 0 0 4px;
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 1.25;
+}
+
+.ba-page-sub {
+  margin: 0 0 16px;
+  color: var(--ba-muted);
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.ba-section-label {
+  margin: 0 0 8px;
+  color: var(--ba-muted);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.ba-card-tight.ant-card {
+  box-shadow: none;
+}
+
+.ba-card-tight .ant-card-body {
+  padding: 12px 16px;
+}
+
+.ba-card-tight .ant-card-head {
+  min-height: 40px;
+  padding: 0 16px;
+  font-size: 14px;
+}
+
+.ba-list {
+  border: 1px solid var(--ba-line);
+  border-radius: 6px;
+  background: #fff;
+}
+
+.ba-list-item {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  align-items: flex-start;
+  padding: 12px 16px;
+  border-top: 1px solid var(--ba-line);
+}
+
+.ba-list-item:first-child {
+  border-top: 0;
+}
+
+.ba-list-item:hover {
+  background: var(--ba-subtle);
+}
+
+.ba-flash {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 12px;
+  margin-bottom: 16px;
+  border: 1px solid var(--ba-warn-line);
+  background: var(--ba-warn-bg);
+  border-radius: 6px;
+  font-size: 14px;
+}
+
+.ba-chat-bubble {
+  max-width: 78%;
+  padding: 8px 10px;
+  border-radius: 6px;
+  font-size: 14px;
+  line-height: 1.5;
+  border: 1px solid var(--ba-line);
+  white-space: pre-wrap;
+}
+
+.ba-chat-bubble.user {
+  margin-left: auto;
+  background: var(--ba-subtle);
+}
+
+.ba-chat-bubble.event {
+  max-width: 100%;
+  margin: 0;
+  background: transparent;
+  border-style: dashed;
+  color: var(--ba-muted);
+  font-size: 12px;
+  text-align: center;
+}
+
+.ant-layout {
+  background: #fff;
+}
+
+.ant-table-wrapper {
+  border: 1px solid var(--ba-line);
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.ant-table {
+  font-size: 13px !important;
+}
+
+.ant-tabs .ant-tabs-tab-active .ant-tabs-tab-btn {
+  color: #1f2328 !important;
+  font-weight: 600;
+}
+
+.ant-tabs-ink-bar {
+  background: #4d6bfe !important;
+}
