@@ -1,4 +1,4 @@
-# BridgeAgent
+# **BridgeAgent**
 
 基于多模态大模型与知识检索的桥梁智能建模平台。
 
@@ -46,8 +46,6 @@
 
 ![任务：同意后开跑识图或建模](docs/screenshots/任务界面.png)
 
-![模型版本：本机 SAP2000 落盘可下载](docs/screenshots/模型版本界面.png)
-
 ### 三件事，第一次用就能对上号
 
 **1. 从图纸到 SAP 模型**  
@@ -71,6 +69,10 @@
 
 图纸、规范 PDF 和 `.sdb` 留在本机磁盘。浏览器只连本机前端，不是公网代算。
 
+![模型版本详情](docs/screenshots/模型版本界面2.png)
+
+![模型版本：本机 SAP2000 落盘可下载](docs/screenshots/模型版本界面.png)
+
 规划与接口：[docs/roadmap.md](docs/roadmap.md)。许可证 [MIT](LICENSE)。密钥 [SECURITY.md](SECURITY.md)。
 
 ## 功能说明
@@ -80,8 +82,6 @@
 ![账本核对](docs/screenshots/账本界面2.png)
 
 **建模。** 同意建模任务后先检查账本；硬缺口自动插补充识别，补上再继续。通过后经 SAP2000 COM 建模型并登记版本。没有本机 SAP 则无法出 `.sdb`。
-
-![模型版本详情](docs/screenshots/模型版本界面2.png)
 
 **问询。** 问尺寸、规范限值、还缺哪类图。以账本为准，需要时检索已启用规范。要开识图或建模必须出任务卡，有操作权的人同意后才执行。各人问询私有。
 
@@ -101,6 +101,8 @@
                                         ├ Unstructured（规范 PDF）
                                         └ 本机 SAP2000（.sdb）
 ```
+
+
 
 ## 如何启动
 
@@ -127,6 +129,8 @@
 3. 用 MySQL 执行 `**bridge_agent_demo/src/main/resources/db/schema.sql**` 建库 `bridge_agent`。已经有旧库的，按 `docs/roadmap.md`「怎么跑」里的补丁接着跑。
 4. 知识嵌入需要本机 Milvus（默认端口 `19530`），用得到再开。
 
+
+
 ### 三个窗口分别怎么开
 
 **窗口 1 — 后端**（在 `bridge_agent_demo` 里，认的是这个目录的 `pom.xml`）：
@@ -149,7 +153,7 @@ py -3.12 -m venv .venv
 
 虚拟环境建过、依赖装过，以后每次只要最后一行 `app.py`。窗口里出现监听 `8001` 即可。
 
-**窗口 3 — 前端：** 到仓库根目录（和 `README.md` 同一层）**双击 `启动前端.bat`**。第一次会 `npm install`，然后启动 Vite，并尝试打开 [http://127.0.0.1:5173/workbench](http://127.0.0.1:5173/workbench) 。关掉这个黑窗口，前端就停了。
+**窗口 3 — 前端：** 到仓库根目录（和 `README.md` 同一层）**双击** `启动前端.bat`。第一次会 `npm install`，然后启动 Vite，并尝试打开 [http://127.0.0.1:5173/workbench](http://127.0.0.1:5173/workbench) 。关掉这个黑窗口，前端就停了。
 
 若不想用脚本，等价命令是进入 `web` 后执行 `npm install`（首次）和 `npm run dev`。
 
